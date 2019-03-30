@@ -1,33 +1,3 @@
-<?php
-session_start();
-
-$bdd = new PDO('mysql:host=sql313.byethost22.com;port=3306;dbname=b22_23488327_espace_membre', 'b22_23488327', 'Flashdanseifs!01');
-
-
-if(isset($_POST['formconnexion'])) {
-   $mailconnect = htmlspecialchars($_POST['mailconnect']);
-   $mdpconnect = sha1($_POST['mdpconnect']);
-   if(!empty($mailconnect) AND !empty($mdpconnect)) {
-      $requser = $bdd->prepare("SELECT * FROM membres WHERE mail = ? AND motdepasse = ?");
-      $requser->execute(array($mailconnect, $mdpconnect));
-      $userexist = $requser->rowCount();
-      if($userexist == 1) {
-         $userinfo = $requser->fetch();
-         $_SESSION['id'] = $userinfo['id'];
-         $_SESSION['pseudo'] = $userinfo['pseudo'];
-         $_SESSION['mail'] = $userinfo['mail'];
-         $_SESSION['type'] = $userinfo['type'];
-         
-         header("Location: src/acces/profil.php?id=".$_SESSION['id']);
-      } else {
-         $erreur = "Mauvais mail ou mot de passe !";
-      }
-   } else {
-      $erreur = "Tous les champs doivent etres complétés !";
-   }
-}
-
-?>
 
 			<!DOCTYPE html>
 <html>
